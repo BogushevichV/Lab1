@@ -27,7 +27,7 @@ class TextAnalyzer:
 
     def write_report(self, report_path: str, encoding: str = 'utf-8') -> None:
         results = self.analyze(encoding=encoding)
-        with open(report_path, 'w', encoding=encoding) as report:
+        with open(report_path, mode='w', encoding=encoding) as report:
             report.write(f"Анализ файла: {self.file.path}\n")
             report.write(f"Символов: {results['characters']}\n")
             report.write(f"Слов: {results['words']}\n")

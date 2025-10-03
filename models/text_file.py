@@ -22,20 +22,20 @@ class TextFile:
     def create(self, initial_text: Optional[str] = None, encoding: str = 'utf-8', overwrite: bool = False) -> None:
         if self.exists() and not overwrite:
             raise FileExistsErrorCustom(f"Файл '{self.path}' уже существует.")
-        with open(self.path, 'w', encoding=encoding, newline='') as f:
+        with open(self.path, mode='w', encoding=encoding, newline='') as f:
             if initial_text:
                 f.write(initial_text)
 
     def append(self, text: str, encoding: str = 'utf-8') -> None:
-        with open(self.path, 'a', encoding=encoding, newline='') as f:
+        with open(self.path, mode='a', encoding=encoding, newline='') as f:
             f.write(text)
 
     def clear(self, encoding: str = 'utf-8') -> None:
-        with open(self.path, 'w', encoding=encoding) as f:
+        with open(self.path, mode='w', encoding=encoding) as f:
             pass
 
     def read_lines(self, encoding: str = 'utf-8', errors: str = 'strict') -> Generator[str, None, None]:
-        with open(self.path, 'r', encoding=encoding, errors=errors) as f:
+        with open(self.path, mode='r', encoding=encoding, errors=errors) as f:
             for line in f:
                 yield line.rstrip('\n')
 
