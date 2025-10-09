@@ -4,6 +4,8 @@ from models.text_analyzer import TextAnalyzer
 from models.binary_file import BinaryFile
 from models.hex_viewer import HexViewer
 from models.binary_analyzer import BinaryAnalyzer
+from models.performance_comparator import PerformanceComparator
+from models.config_loader import ConfigLoader
 import os
 
 
@@ -18,6 +20,35 @@ class CLI:
             return input(text)
         except EOFError:
             return ''
+
+    def compare_performance_flow(self):
+        """Сравнение производительности копирования файлов."""
+        src = self.prompt("Исходный файл: ").strip()
+        unbuf_dst = self.prompt("Файл без буферизации: ").strip()
+        buf_dst = self.prompt("Файл с буферизацией: ").strip()
+
+        if not src or not unbuf_dst or not buf_dst:
+            print("Не указаны все пути.")
+            return
+
+        PerformanceComparator.compare(src, unbuf_dst, buf_dst)
+
+    def read_config_flow(self):
+        """Чтение конфигурационного файла (key=value)."""
+        path = self.prompt("Путь к конфигурационному файлу: ").strip()
+        if not path:
+            print("Файл не указан.")
+            return
+
+        cfg = ConfigLoader.load_config(path)
+        if not cfg:
+            print("Конфигурация пуста или файл не найден.")
+            return
+
+        print("\nЗагруженная конфигурация:")
+        for k, v in cfg.items():
+            print(f"  {k} = {v}")
+
 
     def choose_file(self):
         filename = self.prompt("Введите путь к файлу: ").strip()
@@ -416,6 +447,10 @@ class CLI:
         print("\n--- Управление файлами ---")
         print("17) Переименование файла")
         print("18) Удаление файла")
+        print("\n--- Lab5 ---")
+        print("19) Сравнение производительности копирования")
+        print("20) Чтение конфигурационного файла")
+
         print("\n0)  Выход")
 
     def run(self):
@@ -464,6 +499,14 @@ class CLI:
                 self.rename_file_flow()
             elif choice == '18':
                 self.delete_file_flow()
+
+            #Lab5
+            elif choice == '19':
+                self.compare_performance_flow()
+            elif choice == '20':
+                self.read_config_flow()
+
+
 
             elif choice == '0':
                 print("Выход из программы.")
