@@ -1,0 +1,9 @@
+# Пример конфигурационного файла
+database.url=jdbc:mysql://localhost:3306/testdb
+database.user=admin
+database.password=12345
+app.name=FileManager
+app.version=1.0.0
+log.level=DEBUG
+path.input=./input
+path.output=./output
